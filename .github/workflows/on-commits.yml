@@ -64,7 +64,6 @@ jobs:
           else
             echo "Nothing to commit"
           fi
-          tree -s src
           if [ -d blobs ];then # The blobs dir is only present when a blob is modified or has not yet been published.
             tree -s blobs
           fi
