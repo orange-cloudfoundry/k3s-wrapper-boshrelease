@@ -1,5 +1,0 @@
----
-name: nerdctl 
-dependencies: []
-files:
-- nerdctl/nerdctl

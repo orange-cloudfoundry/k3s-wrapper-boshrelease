@@ -1,11 +1,7 @@
 ---
 name: k3s-agent
 
-packages:
-- k3s
-- kubectl-k3s
-- k3s-images
-- nerdctl
+packages: []
 templates:
   config/bpm.yml: config/bpm.yml
   bin/pre-start.erb: bin/pre-start

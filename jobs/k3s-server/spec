@@ -1,11 +1,7 @@
 ---
 name: k3s-server
 
-packages:
-- k3s
-- k9s
-- kubectl-k3s
-- nerdctl
+packages: []
 templates:
   config/bpm.yml: config/bpm.yml
   bin/pre-start.erb: bin/pre-start

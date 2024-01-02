@@ -1,8 +1,7 @@
 ---
 name: k3s-agent-airgaped-images
 
-packages:
-- k3s-images
+packages: []
 
 templates:
   bin/pre-start.erb: bin/pre-start

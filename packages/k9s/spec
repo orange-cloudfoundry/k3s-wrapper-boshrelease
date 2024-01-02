@@ -1,5 +1,0 @@
----
-name: k9s
-dependencies: []
-files:
-- k9s/k9s

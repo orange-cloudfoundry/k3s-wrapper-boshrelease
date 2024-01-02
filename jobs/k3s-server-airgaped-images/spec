@@ -1,8 +1,7 @@
 ---
 name: k3s-server-airgaped-images
 
-packages:
-- k3s-images
+packages: []
 
 templates:
   bin/pre-start.erb: bin/pre-start

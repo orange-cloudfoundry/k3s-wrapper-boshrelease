@@ -1,5 +1,0 @@
----
-name: kubectl-k3s
-dependencies: []
-files:
-- kubectl/kubectl

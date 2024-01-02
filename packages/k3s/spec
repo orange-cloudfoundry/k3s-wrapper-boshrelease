@@ -1,5 +1,0 @@
----
-name: k3s
-dependencies: []
-files:
-- k3s/k3s 
