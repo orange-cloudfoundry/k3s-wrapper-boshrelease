@@ -1,4 +1,4 @@
-name: vendor-add-blob-create-dev-release
+name: create-dev-release
 
 on:
   push:
@@ -32,16 +32,6 @@ jobs:
           # searching for bosh-cli-7.4.0-linux-amd64 with (linux|x86_64|x64|amd64).*(linux|x86_64|x64|amd64).*.(tar.gz|zip)
           #               bosh-cli-7.4.0-linux-amd64
 
-      - name: Install vendir cli
-        #See https://github.com/marketplace/actions/install-a-binary-from-github-releases
-        uses: jaxxstorm/action-install-gh-release@v1.10.0
-        with:
-          repo: carvel-dev/vendir
-          tag: v0.34.6
-          extension-matching: disable
-          chmod: 0755
-          rename-to: vendir
-
       - name: Install yq cli
         #See https://github.com/marketplace/actions/install-a-binary-from-github-releases
         uses: jaxxstorm/action-install-gh-release@v1.10.0
@@ -64,11 +54,6 @@ jobs:
           git config --global user.name "actions/k3s-boshrelease"
           git config --global user.email "<>"
           git config --global --add safe.directory /github/workspace
-          export VENDIR_GITHUB_API_TOKEN="${GITHUB_TOKEN}"
-          ./vendor.sh
-          git add vendir.lock
-          # FIXME: optimize for idempotency 
-          ./addblob.sh
           remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@${GITHUB_SERVER_URL#https://}/${GITHUB_REPOSITORY}.git"
           
           git add config/blobs.yml
