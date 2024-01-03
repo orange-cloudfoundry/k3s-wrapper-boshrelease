@@ -21,7 +21,8 @@ EOF
 
 
 #uncordon
-/var/vcap/packages/kubectl-k3s/kubectl --kubeconfig=/var/vcap/data/k3s-agent/drain-kubeconfig.yaml uncordon $K3S_NODE_NAME \
+alias kubectl="/var/vcap/packages/k3s/k3s kubectl"
+kubectl --kubeconfig=/var/vcap/data/k3s-agent/drain-kubeconfig.yaml uncordon $K3S_NODE_NAME \
 >> $JOB_DIR/post-start.log \
 2>> $JOB_DIR/post-start-stderr.log
 
@@ -31,4 +32,4 @@ EOF
 #tempo to wait for kubelet to schedule pods before finishing instance group update
 sleep <%= p('k3s.bosh-post-start-delay-seconds') %>
 
-echo 0; exit 0
+echo 0;
