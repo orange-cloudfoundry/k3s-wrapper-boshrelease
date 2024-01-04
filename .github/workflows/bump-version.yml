@@ -1,0 +1,29 @@
+name: Bump version and push tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        description: 'Force recreation of release branches from min version'
+        required: true
+        type: string
+        default: minor
+        options:
+          - minor
+          - major
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Number of commits to fetch. 0 indicates all history for all branches and tags.
+
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+          WITH_V: false
+          INITIAL_VERSION: 0.0
+          DEFAULT_BUMP: ${{ inputs.bump_type}}

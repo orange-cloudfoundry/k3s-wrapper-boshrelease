@@ -3,10 +3,10 @@ name: create-dev-release
 on:
   push:
     branches:
-      - master
       # See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
       # *: Matches zero or more characters, but does not match the / character. For example, Octo* matches Octocat.
       # **: Matches zero or more of any character.
+      - master
 
 jobs:
   build:
@@ -68,3 +68,11 @@ jobs:
           name: archive-bosh-dev-release-tgz
           path: |
             k3s-*.tgz
+
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+          WITH_V: false
+          INITIAL_VERSION: 0.0
+          DEFAULT_BUMP: none
