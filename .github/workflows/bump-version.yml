@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       bump_type:
-        description: 'Force recreation of release branches from min version'
+        description: 'Select type of version to create:  major: x.0 (1.0, 2.0,...) or minor: 1.x (1.1, 1.2,...)'
         required: true
-        type: string
-        default: minor
+        type: choice
         options:
           - minor
           - major
+        default: minor
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,5 +25,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
           WITH_V: false
-          INITIAL_VERSION: 0.0
+          INITIAL_VERSION: "0.0"
           DEFAULT_BUMP: ${{ inputs.bump_type}}
