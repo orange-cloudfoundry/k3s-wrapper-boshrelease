@@ -22,7 +22,7 @@ jobs:
 
       - name: create bosh release
         id: create-bosh-release
-        uses: orange-cloudfoundry/bosh-release-action@v2
+        uses: orange-cloudfoundry/bosh-release-action@v6
         if: success() && startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
