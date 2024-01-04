@@ -74,5 +74,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
           WITH_V: false
-          INITIAL_VERSION: "0.0"
           DEFAULT_BUMP: none
