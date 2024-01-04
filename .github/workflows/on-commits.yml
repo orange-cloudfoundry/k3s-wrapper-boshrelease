@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - release-*
       # See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
       # *: Matches zero or more characters, but does not match the / character. For example, Octo* matches Octocat.
       # **: Matches zero or more of any character.
@@ -68,4 +67,4 @@ jobs:
         with:
           name: archive-bosh-dev-release-tgz
           path: |
-            k9s-*.tgz
+            k3s-*.tgz
