@@ -1,0 +1,29 @@
+name: k3s-wrapper
+version: 0.3.0
+commit_hash: 643db8c
+uncommitted_changes: false
+jobs:
+- name: k3s-agent
+  version: 89a8d1e5bd21ef19a93e23f3bfe969ceeea0e298549c01e5f41a47c5293eb985
+  fingerprint: 89a8d1e5bd21ef19a93e23f3bfe969ceeea0e298549c01e5f41a47c5293eb985
+  sha1: sha256:4277d23902d5e1f6ed59176cddc6d3845af2147db89dad31038c5f7dd6b18a05
+  packages: []
+- name: k3s-agent-airgaped-images
+  version: d537c9ed26ef564ffad102f490db0f636145369df8cc2e6c8900281688c79ea6
+  fingerprint: d537c9ed26ef564ffad102f490db0f636145369df8cc2e6c8900281688c79ea6
+  sha1: sha256:8421e0372f32f9d5eac566fcdcd731511dc7fa2ebd4a880387f7506dc188630e
+  packages: []
+- name: k3s-server
+  version: 0a21b62fbe9f64f14c59d8600912c41362ad552c7e46d0e6aac4f76686ea2cca
+  fingerprint: 0a21b62fbe9f64f14c59d8600912c41362ad552c7e46d0e6aac4f76686ea2cca
+  sha1: sha256:cb56be3693a03e0cc3a622bcb8c3e4342e2496ce9768da6b78d3a3b866b3aabf
+  packages: []
+- name: k3s-server-airgaped-images
+  version: b98ec46e7fbece146226c3a6481b2c108f67881a23a1e359a56f955e4b892ca2
+  fingerprint: b98ec46e7fbece146226c3a6481b2c108f67881a23a1e359a56f955e4b892ca2
+  sha1: sha256:0a631d41e3d43016970dfa2f7e3d6f964e4bcb8962c057197875836e5798bc41
+  packages: []
+license:
+  version: cf0ca1fe65dee9607c7bb9460a3f20835e582cbb7f5b2c3625fba2e21d7e91b9
+  fingerprint: cf0ca1fe65dee9607c7bb9460a3f20835e582cbb7f5b2c3625fba2e21d7e91b9
+  sha1: sha256:7de7400dd5c978803e6cf8fabb8c9ddcb830cd773a107499020eb202fa15e74b
