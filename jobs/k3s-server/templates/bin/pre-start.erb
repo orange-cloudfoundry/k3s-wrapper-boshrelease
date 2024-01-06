@@ -17,6 +17,13 @@ chmod go-r /var/vcap/jobs/k3s-server/config/datastore-*
 mkdir -p /var/vcap/store/k3s-server/
 cp -f ${JOB_DIR}/config/additional-manifest.yaml /var/vcap/store/k3s-server/server/manifests/additional-manifest.yaml
 
+#copy images to containerd expected location (datadir/images) for airgap start.
+# see https://rancher.com/docs/k3s/latest/en/installation/airgap/
+mkdir -p /var/vcap/store/k3s-server/agent/images
+cp /var/vcap/packages/k3s-images/k3s-airgap-images-amd64.tar.gz /var/vcap/store/k3s-server/agent/images
+gunzip -f /var/vcap/store/k3s-server/agent/images/k3s-airgap-images-amd64.tar.gz
+
+
 set -e
 # Set overlay IP
 OVERLAY_IP="<%= spec.ip %>"

@@ -12,6 +12,13 @@ mkdir -p /etc
 mkdir -p /var/vcap/store/k3s-node/etc/rancher
 ln -sf /var/vcap/store/k3s-node/etc/rancher /etc/rancher
 
+#copy images to containerd expected location (datadir/images) for airgap start.
+# see https://rancher.com/docs/k3s/latest/en/installation/airgap/
+mkdir -p /var/vcap/store/k3s-agent/agent/images
+cp /var/vcap/packages/k3s-images/k3s-airgap-images-amd64.tar.gz /var/vcap/store/k3s-agent/agent/images
+gunzip -f /var/vcap/store/k3s-agent/agent/images/k3s-airgap-images-amd64.tar.gz
+
+
 set -e
 # Set overlay IP
 OVERLAY_IP="<%= spec.ip %>"
