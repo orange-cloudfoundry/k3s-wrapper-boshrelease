@@ -75,6 +75,9 @@ case $1 in
 <% end %>
 
 
+<% if_p('k3s.vmodule') do |vmodule| %>
+    export FLAGS="$FLAGS --vmodule <%= vmodule %>"    
+<% end %>
 
 
 <% if_p('k3s.node-labels') do |value| %>

@@ -55,6 +55,9 @@ properties:
     description: "(logging) Number for the log level verbosity (default: 0)"
     default: 0
 
+  k3s.vmodule:
+    description: "Comma-separated list of FILE_PATTERN=LOG_LEVEL settings for file-filtered logging"
+
   k3s.bind-address value:
     description: "(listener) k3s bind address (default: 0.0.0.0)"
     default: 0.0.0.0

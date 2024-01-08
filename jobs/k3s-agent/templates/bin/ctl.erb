@@ -33,6 +33,7 @@ case $1 in
 
 
 
+
     <% if_p('k3s.token-file-content') do |value| %>
     export K3S_TOKEN_FILE=/var/vcap/jobs/k3s-agent/config/token.csv
     <% end %>
@@ -44,6 +45,11 @@ case $1 in
 
 <% if_p('k3s.set-provider-id-prefix') do |prefix| %>
     export FLAGS="$FLAGS --kubelet-arg=provider-id=<%= prefix %>://<%= spec.name %>-<%= spec.index %>"
+<% end %>
+
+
+<% if_p('k3s.vmodule') do |vmodule| %>
+    export FLAGS="$FLAGS --vmodule <%= vmodule %>"    
 <% end %>
 
 
