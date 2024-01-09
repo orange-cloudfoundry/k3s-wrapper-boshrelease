@@ -45,17 +45,6 @@ jobs:
           git merge ${{github.ref_name}}-release
           git push origin
 
-      - name: create github release
-        id: create-github-release
-        if: success() && startsWith(github.ref, 'refs/tags/')
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body: "cutting release ${{ steps.create-bosh-release.outputs.version }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       # see https://github.com/ncipollo/release-action
       - name: create github release
         id: create-github-release
