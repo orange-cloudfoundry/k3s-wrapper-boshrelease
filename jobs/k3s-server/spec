@@ -226,6 +226,7 @@ properties:
     description: if set, defines and activate k8s api tracing config. See https://kubernetes.io/docs/concepts/cluster-administration/system-traces/#kube-apiserver-traces
     # Note: no default set. Tracing is disabled by default
     #    default: |
+    # # This is an example config that records spans for 1 in 10000 requests, and uses the default OpenTelemetry endpoint
     #       apiVersion: apiserver.config.k8s.io/v1beta1
     #       kind: TracingConfiguration
     #       # default value
