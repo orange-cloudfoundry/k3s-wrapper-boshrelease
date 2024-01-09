@@ -67,16 +67,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: EndBug/add-and-commit@1bad3abcf0d6ec49a5857d124b0bfb52dc7bb081 # v9.1.3: https://github.com/EndBug/add-and-commit/commits/v9.1.3
-        with:
-          # The arguments for the `git add` command (see the paragraph below for more info)
-          # Default: '.'
-          add: 'releases/k3s-wrapper'
-          # Determines the way the action fills missing author name and email. Three options are available:
-          # - github_actor -> UserName <UserName@users.noreply.github.com>
-          # - user_info -> Your Display Name <your-actual@email.com>
-          # - github_actions -> github-actions <email associated with the github logo>
-          # Default: github_actor
-          default_author: github_actions
-          message: "Add missing generated files for ${{ steps.create-bosh-release.outputs.version }}"
+#      - uses: EndBug/add-and-commit@1bad3abcf0d6ec49a5857d124b0bfb52dc7bb081 # v9.1.3: https://github.com/EndBug/add-and-commit/commits/v9.1.3
+#        with:
+#          # The arguments for the `git add` command (see the paragraph below for more info)
+#          # Default: '.'
+#          add: 'releases/k3s-wrapper'
+#          # Determines the way the action fills missing author name and email. Three options are available:
+#          # - github_actor -> UserName <UserName@users.noreply.github.com>
+#          # - user_info -> Your Display Name <your-actual@email.com>
+#          # - github_actions -> github-actions <email associated with the github logo>
+#          # Default: github_actor
+#          default_author: github_actions
+#          message: "Add missing generated files for ${{ steps.create-bosh-release.outputs.version }}"
 
