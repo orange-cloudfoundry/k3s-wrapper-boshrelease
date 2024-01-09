@@ -20,14 +20,30 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: create branch for tag
+        id: create-branch-for-tag
+        run: |
+          set -x # enable traces
+          git co -b ${{github.ref_name}}-release
+
       - name: create bosh release
         id: create-bosh-release
         uses: orange-cloudfoundry/bosh-release-action@v2
         if: success() && startsWith(github.ref, 'refs/tags/')
+        with:
+          target_branch: ${{github.ref_name}}-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_BOSH_ACCES_KEY_ID: ${{ secrets.AWS_BOSH_ACCES_KEY_ID }}
           AWS_BOSH_SECRET_ACCES_KEY: ${{ secrets.AWS_BOSH_SECRET_ACCES_KEY }}
+
+      - name: merge branch into master
+        id: merge-branch-into-master
+        run: |
+          set -x # enable traces
+          git checkout master
+          git merge ${{github.ref_name}}-release
+          git push origin
 
       - name: create github release
         id: create-github-release
