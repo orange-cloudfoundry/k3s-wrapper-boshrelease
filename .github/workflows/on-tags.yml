@@ -50,7 +50,7 @@ jobs:
         id: create-github-release
         uses: ncipollo/release-action@v1.13.0
         with:
-          tag: ${{ github.ref }}
+          tag: ${{ github.ref_name }}
           draft: false
           allowUpdates: false # > indicates if we should update a release if it already exists.
           generateReleaseNotes: true
