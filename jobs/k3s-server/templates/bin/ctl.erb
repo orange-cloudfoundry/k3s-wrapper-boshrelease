@@ -182,6 +182,12 @@ export FLAGS="$FLAGS --kube-apiserver-arg=audit-log-maxsize=10"
 
 <% end %>
 
+<% if_p('k3s.api-server-tracing-config-file') do |value| %>
+
+export FLAGS="$FLAGS --kube-apiserver-arg=tracing-config-file=/var/vcap/jobs/k3s-server/config/api-server-tracing-config.yaml"
+
+<% end %>
+
 
 
 
