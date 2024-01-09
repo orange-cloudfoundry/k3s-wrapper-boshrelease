@@ -218,6 +218,16 @@ properties:
     description: "(networking) IPv4/IPv6 network CIDRs to use for service IPs (default: 10.43.0.0/16)"
   k3s.cluster-dns:
     description: "(networking) IPv4 Cluster IP for coredns service. Should be in your service-cidr range (default: 10.43.0.10)"
+# api-server-tracing-config-file
+  k3s.api-server-tracing-config-file:
+    description: if set, defines and activate k8s api tracing config. See https://kubernetes.io/docs/concepts/cluster-administration/system-traces/#kube-apiserver-traces
+    # Note: no default set. Tracing is disabled by default
+    #    default: |
+    #       apiVersion: apiserver.config.k8s.io/v1beta1
+    #       kind: TracingConfiguration
+    #       # default value
+    #       #endpoint: localhost:4317
+    #       samplingRatePerMillion: 100
 
 # audit policy file
   k3s.audit-policy-file:
@@ -282,6 +292,7 @@ properties:
           # generate an audit event in RequestReceived.
           omitStages:
             - "RequestReceived"
+
 
 #done    
 #   -v value                                   (logging) Number for the log level verbosity (default: 0)
