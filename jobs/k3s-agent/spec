@@ -148,6 +148,15 @@ properties:
       kind: KubeletConfiguration
       shutdownGracePeriod: 30s
       shutdownGracePeriodCriticalPods: 10s
+      # See https://kubernetes.io/docs/concepts/cluster-administration/system-traces/#kubelet-traces
+      # This is an example config that records spans for 1 in 10000 requests, and uses the default OpenTelemetry endpoint
+      # featureGates:
+      #   KubeletTracing: true
+      # tracing:
+      #   # default value
+      #   #endpoint: localhost:4317
+      #   samplingRatePerMillion: 100
+        
 
   k3s.containerd_additional_env_vars:
     description: additional env vars to set for containerd (the key will be prefixed with CONTAINERD_, and set in k3s launch context
