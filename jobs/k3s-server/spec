@@ -25,6 +25,7 @@ templates:
   
   config/additional-manifest.yaml.erb: config/additional-manifest.yaml
   config/audit-policy.yaml.erb: config/audit-policy.yaml
+  config/api-server-tracing-config.yaml.erb: config/api-server-tracing-config.yaml
   config/kubelet-config.yaml.erb: config/kubelet-config.yaml
 
 # Documentation https://bosh.io/docs/links.html
