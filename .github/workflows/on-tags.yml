@@ -24,7 +24,7 @@ jobs:
         id: create-branch-for-tag
         run: |
           set -x # enable traces
-          git co -b ${{github.ref_name}}-release
+          git checkout -b ${{github.ref_name}}-release
 
       - name: create bosh release
         id: create-bosh-release
