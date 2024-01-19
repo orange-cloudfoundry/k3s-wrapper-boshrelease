@@ -47,7 +47,7 @@ jobs:
       # and if clause https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsif
       - name: create bosh dev release
         id: create-bosh-release
-        uses: orange-cloudfoundry/bosh-release-action@8732ff085712d9980fc66e50892cb9c3d7a3f884 # v2 # will create dev release when pushed git ref is not a tag
+        uses: orange-cloudfoundry/bosh-release-action@a124f0c7eda59d3070c66507bcda21196d7e0a90 # v6 # will create dev release when pushed git ref is not a tag
         with:
           target_branch: ${{github.ref_name}}
         env:
