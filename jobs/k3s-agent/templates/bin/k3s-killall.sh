@@ -68,9 +68,4 @@ ip link show 2>/dev/null | grep 'master cni0' | while read ignore iface ignore; 
     iface=${iface%%@*}
     [ -z "$iface" ] || ip link delete $iface
 done
-#ip link delete cni0
-#ip link delete flannel.1
-#ip link delete flannel-v6.1
-#rm -rf /var/lib/cni/
-#iptables-save | grep -v KUBE- | grep -v CNI- | iptables-restore
-#ip6tables-save | grep -v KUBE- | grep -v CNI- | ip6tables-restore
+
