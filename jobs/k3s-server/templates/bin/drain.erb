@@ -8,8 +8,7 @@ export K3S_NODE_NAME=<%= spec.name %>-<%= spec.index %>
 <% end %>
 
 #drain
-alias kubectl="/var/vcap/packages/k3s/k3s kubectl"
-kubectl --kubeconfig=/var/vcap/store/k3s-server/kubeconfig.yml drain $K3S_NODE_NAME \
+/var/vcap/packages/k3s/k3s kubectl --kubeconfig=/var/vcap/store/k3s-server/kubeconfig.yml drain $K3S_NODE_NAME \
 --delete-emptydir-data=<%= p('k3s.drain.delete-emptydir-data') %> \
 --disable-eviction=<%= p('k3s.drain.disable-eviction') %> \
 --grace-period=<%= p('k3s.drain.grace-period') %> \

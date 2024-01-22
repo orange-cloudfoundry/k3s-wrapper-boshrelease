@@ -21,8 +21,7 @@ EOF
 
 
 #uncordon
-alias kubectl="/var/vcap/packages/k3s/k3s kubectl"
-kubectl --kubeconfig=/var/vcap/data/k3s-agent/drain-kubeconfig.yaml uncordon $K3S_NODE_NAME \
+/var/vcap/packages/k3s/k3s kubectl --kubeconfig=/var/vcap/data/k3s-agent/drain-kubeconfig.yaml uncordon $K3S_NODE_NAME \
 >> $JOB_DIR/post-start.log \
 2>> $JOB_DIR/post-start-stderr.log
 
