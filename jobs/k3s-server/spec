@@ -7,22 +7,24 @@ templates:
   bin/pre-start.erb: bin/pre-start
   bin/post-start.erb: bin/post-start  
   bin/pre-stop.erb: bin/pre-stop
+  bin/post-stop.erb: bin/post-stop
   bin/post-deploy.erb: bin/post-deploy
   bin/drain.erb: bin/drain
   bin/ctl.erb: bin/ctl
+  bin/envrc: bin/envrc
+  bin/setup-user-env.erb: bin/setup-user-env
+  bin/k3s-killall.sh: bin/k3s-killall.sh
+
   config/registries.yaml.erb: config/registries.yaml
   config/registry.ca.erb: config/registry.ca
   config/registry.cert.erb: config/registry.cert
   config/registry.key.erb: config/registry.key
   config/token.csv.erb: config/token.csv
-  bin/envrc: bin/envrc
-  bin/setup-user-env.erb: bin/setup-user-env
-  bin/k3s-killall.sh: bin/k3s-killall.sh
 
   config/datastore-cafile.erb: config/datastore-cafile
   config/datastore-certfile.erb: config/datastore-certfile
   config/datastore-keyfile.erb: config/datastore-keyfile
-  
+
   config/additional-manifest.yaml.erb: config/additional-manifest.yaml
   config/audit-policy.yaml.erb: config/audit-policy.yaml
   config/api-server-tracing-config.yaml.erb: config/api-server-tracing-config.yaml

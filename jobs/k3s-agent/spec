@@ -18,7 +18,7 @@ templates:
   config/registries.yaml.erb: config/registries.yaml
   config/registry.ca.erb: config/registry.ca
   config/registry.cert.erb: config/registry.cert
-  config/registry.key.erb: config/registry.key 
+  config/registry.key.erb: config/registry.key
   config/token.csv.erb: config/token.csv
 
   config/kubelet-config.yaml.erb: config/kubelet-config.yaml
