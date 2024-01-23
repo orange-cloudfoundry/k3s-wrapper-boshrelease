@@ -8,7 +8,6 @@ exit 0
 
 <% else %>
 echo "post-stop: k3s-killall.sh to clean the host"
-/var/vcap/jobs/k3s-agent/bin/clean-cilium.sh
 /var/vcap/jobs/k3s-agent/bin/k3s-killall.sh
 exit 0
 <% end %>

@@ -39,6 +39,30 @@ killtree() {
     ) 2>/dev/null
 }
 
+remove_interfaces() {
+    # Delete network interface(s) that match 'master cni0' and ' lxc'
+    ip link show 2>/dev/null | grep -E "master cni0| lxc" | while read ignore iface ignore; do
+        iface=${iface%%@*}
+        [ -z "$iface" ] || ip link delete $iface
+    done
+
+    # Delete cni related interfaces
+    ip link delete cilium_host    #--- cilium
+    ip link delete cilium_net     #--- cilium
+    ip link delete cilium_vxlan   #--- cilium
+    ip link delete cni0
+    ip link delete flannel.1
+    ip link delete flannel-v6.1
+    ip link delete kube-ipvs0
+    ip link delete flannel-wg
+    ip link delete flannel-wg-v6
+
+    # Restart tailscale
+    if [ -n "$(command -v tailscale)" ]; then
+        tailscale set --advertise-routes=
+    fi
+}
+
 getshims() {
     ps -e -o pid= -o args= | sed -e 's/^ *//; s/\s\s*/\t/;' | grep -w 'k3s/data/[^/]*/bin/containerd-shim' | cut -f1
 }
@@ -49,23 +73,25 @@ do_unmount_and_remove() {
     set +x
     while read -r _ path _; do
         case "$path" in $1*) echo "$path" ;; esac
-    done < /proc/self/mounts | sort -r | xargs -r -t -n 1 sh -c 'umount "$0" && rm -rf "$0"'
+    done < /proc/self/mounts | sort -r | xargs -r -t -n 1 sh -c 'umount -f "$0" && rm -rf "$0"'
     set -x
 }
 
 do_unmount_and_remove '/run/k3s'
 do_unmount_and_remove '/var/lib/rancher/k3s'
-do_unmount_and_remove '/var/vcap/data/k3s-agent/kubelet/pods' #bosh fs layout adaptation
-do_unmount_and_remove '/var/vcap/data/k3s-agent/kubelet/plugins'
-do_unmount_and_remove '/var/vcap/data/k3s-agent/kubelet/plugins/kubernetes.io/csi' #bosh fs adaptation for csi mount (eg: longhorn)
+do_unmount_and_remove '/var/vcap/data/k3s-agent/kubelet/pods'                       #--- bosh fs layout adaptation
+do_unmount_and_remove '/var/vcap/data/k3s-agent/kubelet/plugins'                    #--- bosh fs layout adaptation
+do_unmount_and_remove '/var/vcap/data/k3s-agent/kubelet/plugins/kubernetes.io/csi'  #--- bosh fs adaptation for csi mount (eg: longhorn)
 do_unmount_and_remove '/run/netns/cni-'
 
 # Remove CNI namespaces
 ip netns show 2>/dev/null | grep cni- | xargs -r -t -n 1 ip netns delete
 
-# Delete network interface(s) that match 'master cni0'
-ip link show 2>/dev/null | grep 'master cni0' | while read ignore iface ignore; do
-    iface=${iface%%@*}
-    [ -z "$iface" ] || ip link delete $iface
-done
+# Remove CNI network interfaces
+remove_interfaces
 
+rm -rf /var/lib/cni/
+
+# Clean k3s iptables rules
+iptables-save | grep -v KUBE- | grep -v CNI- | grep -iv flannel | grep -iv cilium | iptables-restore
+ip6tables-save | grep -v KUBE- | grep -v CNI- | grep -iv flannel | grep -iv cilium | ip6tables-restore
