@@ -3,9 +3,12 @@
 
 ## Principles
 
+### Releasing based on Pull Request
+
+* step 1
 ```mermaid
 journey
-    title create a new release
+    title Contributing for a new release 
     section New feature or bug fix
         Create branch: 9: Me
         Commits & Push changes: 9: Me
@@ -14,18 +17,42 @@ journey
         Iterate on PR: 9: Me
         Create DEV release: 9: Github Action
         Download DEV release: 6: Me
+    title Prepare release
     section Prepare release
         Squash commits: 9: Me
         Reword commits: 9: Me
-        Force Push changes: 9 Me
+        Force Push changes: 9: Me
+```
+* step 2
+```mermaid
+journey
+    title Publishing a release
     section Release
         Review PR: 9: Maintener
         Merge PR: 9: Maintener  
         Bump version: 9: Github Action
         Create final release: 9: Github Action
+        Create GitHub release: 9: Github Action
 ```
 
-### Reword commits
+### Releasing based on `master` direct commits
+
+```mermaid
+journey
+    title Contributing for a new release 
+    section New feature or bug fix
+        Commit local changes: 9: Me
+    title Prepare release
+    section Prepare release
+        Reword commits: 9: Me
+        Push changes: 9: Me
+    section Release
+        Bump version: 9: Github Action
+        Create final release: 9: Github Action
+        Create GitHub release: 9: Github Action
+```
+
+#### Reword commits
 We use [conventional commits convention](https://www.conventionalcommits.org/en/v1.0.0/)
 
 > The commit contains the following structural elements, to communicate intent to the consumers of your library:
