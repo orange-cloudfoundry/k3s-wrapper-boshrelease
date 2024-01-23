@@ -16,19 +16,24 @@ The aim of the bosh release:
 - reduced memory footprint wrt existing k8s bosh release
 
 - enrich k3 experience with bosh goodies
-  - reproductible / stable OS provided as stemcell
-  - easy cluster deployment (multi-vm, multi-master, correcly wired master / agent)
+  - reproducible / stable OS provided as stemcell
+  - easy cluster deployment (multi-vm, multi-master, correctly wired master / agent)
   - multi-iaas capability (vpshere/openstack/gcp/azure/ ... )
   - credhub secrets generation (k3s-token)
-- day 2 operations (persistend disk resize, stemcell rotation)  
+- day 2 operations (persistent disk resize, stemcell rotation)  
 - ease of dev / operations
   - k9s and kubectl are packaged and preconfigured inside the bosh instances
-  - easy automation with complementary bosh mechanismes
+  - easy automation with complementary bosh mechanisms
     - bosh errand mechanism
     - helm-kubectl bosh release https://orange-cloudfoundry.github.io/helm-kubectl-boshrelease/
     - terraform bosh release https://github.com/orange-cloudfoundry/terraform-release
-    - database bosh releases for backend (posgres / mysql /etcd)
+    - database bosh releases for backend (postgres / mysql /etcd)
     - generic scripting release (if low level scripting is required) https://github.com/orange-cloudfoundry/generic-scripting-release
+
+It should be associated with:
+ - https://github.com/orange-cloudfoundry/k3s-packages-boshrelease
+ - https://github.com/orange-cloudfoundry/k9s-package-boshrelease
+ - https://github.com/orange-cloudfoundry/nerdctl-package-boshrelease
 
 ## K3s compatibility matrix
 
@@ -37,17 +42,7 @@ Details about each embedded component are available at
 
 ## design overview
 
-Provide a lightweight bosh packaging of Rancher k3s kubernetes distribution
-
-Includes
-- Rancher k3s binary
-- k9S binary
-
-
-The bosh release offers 2 jobs to build a full k3s bosh deployment:
-- k3s-server job.
-- k3s-agent job.
-
+It contains scripts to use with [k3s-packages-boshrelease](https://github.com/orange-cloudfoundry/k3s-packages-boshrelease)
 
 ## Usage
 
@@ -78,3 +73,4 @@ bosh deploy k3s-boshrelease/manifests/k3s.yml
 ## Full fledge usage sample
 this bosh release usage can be seen in action in https://github.com/orange-cloudfoundry/paas-templates/tree/manual-drop/shared-operators/k3s
 
+## Contribution

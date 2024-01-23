@@ -7,6 +7,11 @@ on:
       - master
     paths-ignore:
       - '.github/**'
+      - .gitignore
+      - CONTRIBUTING.md
+      - README.md
+      - renovate.json5
+      - run-renovate-locally.bash
 
 jobs:
   build:
