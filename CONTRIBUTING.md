@@ -23,6 +23,7 @@ journey
         Reword commits: 9: Me
         Force Push changes: 9: Me
 ```
+
 * step 2
 ```mermaid
 journey
@@ -34,6 +35,9 @@ journey
         Create final release: 9: Github Action
         Create GitHub release: 9: Github Action
 ```
+
+#### Downloading dev release
+Dev release are available as GitHub artefacts on each builds of create-dev-release-on-PR (on-PRs-commits.yml)
 
 ### Releasing based on `master` direct commits
 
