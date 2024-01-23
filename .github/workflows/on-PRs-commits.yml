@@ -1,12 +1,11 @@
-name: create-dev-release
+name: create-dev-release-on-PR
 
 on:
   push:
-    branches:
-      # See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
-      # *: Matches zero or more characters, but does not match the / character. For example, Octo* matches Octocat.
-      # **: Matches zero or more of any character.
+    branches-ignore:
       - master
+    tags-ignore:
+      - '*'
 
 jobs:
   build:
@@ -47,7 +46,7 @@ jobs:
       # and if clause https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsif
       - name: create bosh dev release
         id: create-bosh-release
-        uses: orange-cloudfoundry/bosh-release-action@8732ff085712d9980fc66e50892cb9c3d7a3f884 # v2 # will create dev release when pushed git ref is not a tag
+        uses: orange-cloudfoundry/create-bosh-release-action@v1.0.1 # will create dev release when pushed git ref is not a tag
         with:
           target_branch: ${{github.ref_name}}
         env:
@@ -68,10 +67,3 @@ jobs:
           name: archive-bosh-dev-release-tgz
           path: |
             k3s-*.tgz
-
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@a2c70ae13a881faf2b4953baaa9e49731997ab36 # 1.67.0 # Don't use @master or @v1 unless you're happy to test the latest version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
-          WITH_V: false
-          DEFAULT_BUMP: none
