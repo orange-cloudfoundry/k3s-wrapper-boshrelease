@@ -16,7 +16,10 @@ journey
         Create a Pull Request: 9: Me
         Iterate on PR: 9: Me
         Create DEV release: 9: Github Action
-        Download DEV release \n(+ set v=latest in manifest \n+bosh upload-release\n+bosh deploy): 6: Me
+        Download DEV release: 6: Me
+        set v=latest in manifest: 6a: Me
+        bosh upload-release +bosh deploy: 6b Me
+
     title Prepare release
     section Prepare release
         Squash commits: 9: Me
