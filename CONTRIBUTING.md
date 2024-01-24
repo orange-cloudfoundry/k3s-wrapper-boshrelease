@@ -72,6 +72,9 @@ journey
 ##### Create a new major
 
 `git commit -m "major: my new major feature"`
+
+or
+
 `git commit -m "!feature: my feature with breaking change"`
 
 ##### More details
