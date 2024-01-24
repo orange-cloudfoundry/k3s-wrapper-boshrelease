@@ -60,6 +60,22 @@ journey
 ```
 
 #### Reword commits
+
+##### Create a new patch
+
+`git commit -m "a random message"`
+
+##### Create a new minor
+
+`git commit -m "feature: my new feature"`
+
+##### Create a new major
+
+`git commit -m "major: my new major feature"`
+`git commit -m "!feature: my feature with breaking change"`
+
+##### More details
+
 We use [conventional commits convention](https://www.conventionalcommits.org/en/v1.0.0/)
 
 > The commit contains the following structural elements, to communicate intent to the consumers of your library:
