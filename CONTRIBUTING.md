@@ -48,7 +48,7 @@ journey
         Commit local changes: 9: Me
     title Prepare release
     section Prepare release
-        Reword commits: 9: Me
+        Reword commits (conventional msg) : 9: Me
         Push changes: 9: Me
     section Release
         Bump version: 9: Github Action
