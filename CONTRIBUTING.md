@@ -17,8 +17,8 @@ journey
         Iterate on PR: 9: Me
         Create DEV release: 9: Github Action
         Download DEV release: 6: Me
-        set v=latest in manifest: 6a: Me
-        bosh upload-release +bosh deploy: 6b Me
+        set v=latest in manifest: 4: Me
+        bosh upload-release +bosh deploy: 4: Me
 
     title Prepare release
     section Prepare release

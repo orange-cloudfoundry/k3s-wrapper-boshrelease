@@ -74,3 +74,5 @@ bosh deploy k3s-boshrelease/manifests/k3s.yml
 this bosh release usage can be seen in action in https://github.com/orange-cloudfoundry/paas-templates/tree/manual-drop/shared-operators/k3s
 
 ## Contribution
+
+see [contributing](CONTRIBUTING.md)
