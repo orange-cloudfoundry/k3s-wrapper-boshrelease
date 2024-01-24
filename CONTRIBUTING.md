@@ -75,7 +75,7 @@ journey
 
 or
 
-`git commit -m "!feature: my feature with breaking change"`
+`git commit -m "feature!: my feature with breaking change"`
 
 ##### More details
 
