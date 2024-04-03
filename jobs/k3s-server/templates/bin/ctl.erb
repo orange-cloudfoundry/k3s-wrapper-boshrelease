@@ -60,6 +60,9 @@ case $1 in
     export FLAGS="$FLAGS --disable-cloud-controller"
 <% end %>
 
+<% if_p('k3s.etcd-expose-metrics') do |value| %>
+    export FLAGS="$FLAGS --etcd-expose-metrics"
+<% end %>
 
 <% if_p('k3s.flannel-backend') do |value| %>
     export FLAGS="$FLAGS --flannel-backend=<%= value %>"
