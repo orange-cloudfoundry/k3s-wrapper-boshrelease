@@ -124,10 +124,6 @@ properties:
     description: if set, the bosh post-stop script wont leverage k3s-killall.sh script
     default: false 
 
-  k3s.embedded-registry:
-    description: if set,  a stateless distributed OCI registry mirror that allows peer-to-peer sharing of container images between nodes in a Kubernetes cluster
-
-
 # token-file
   k3s.token-file-content:
     description: token-file content. see https://kubernetes.io/docs/reference/access-authn-authz/authentication/#static-token-file

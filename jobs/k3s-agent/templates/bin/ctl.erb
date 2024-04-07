@@ -86,10 +86,6 @@ case $1 in
 <% end %>
 <% end %>
 
-<% if_p('k3s.embedded-registry') do |value| %>
-    export FLAGS="$FLAGS --embedded-registry"
-<% end %>
-
 
 #set external ip flags
 <% if spec.ip != spec.networks.marshal_dump.values.first.ip %>
