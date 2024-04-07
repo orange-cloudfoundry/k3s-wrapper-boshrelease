@@ -173,6 +173,9 @@ properties:
   k3s.datastore-keyfile:
     description: TLS key file used to secure datastore backend communication
 
+  k3s.embedded-registry:
+    description: if set,  a stateless distributed OCI registry mirror that allows peer-to-peer sharing of container images between nodes in a Kubernetes cluster
+
 
 #etcd options
   k3s.etcd-expose-metrics:
