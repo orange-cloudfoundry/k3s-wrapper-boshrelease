@@ -1,0 +1,19 @@
+name: k3s-wrapper
+version: 0.8.4
+commit_hash: 87bbe2d
+uncommitted_changes: false
+jobs:
+- name: k3s-agent
+  version: dcbceeebddc84b17b4be7093e6e0813324aa171299d022893baa3987db1d1a6e
+  fingerprint: dcbceeebddc84b17b4be7093e6e0813324aa171299d022893baa3987db1d1a6e
+  sha1: sha256:81917e91a0a3e980eccfa7f9e95f4618960fedb26f6d76a9759a08854c3dce1a
+  packages: []
+- name: k3s-server
+  version: d35fadeb39e91a309d82df603260b8bfdf8ec63b17af9ba02171cf5eefc8ccbd
+  fingerprint: d35fadeb39e91a309d82df603260b8bfdf8ec63b17af9ba02171cf5eefc8ccbd
+  sha1: sha256:2ef5ce9582bc9975d099d7cfa392951cfeebb08f635662d40283a4a90c33ca00
+  packages: []
+license:
+  version: cf0ca1fe65dee9607c7bb9460a3f20835e582cbb7f5b2c3625fba2e21d7e91b9
+  fingerprint: cf0ca1fe65dee9607c7bb9460a3f20835e582cbb7f5b2c3625fba2e21d7e91b9
+  sha1: sha256:7de7400dd5c978803e6cf8fabb8c9ddcb830cd773a107499020eb202fa15e74b
