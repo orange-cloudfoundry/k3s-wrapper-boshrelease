@@ -140,6 +140,7 @@ case $1 in
 <% end %>
 <% end %>
 
+
 <% if_p('k3s.cluster-cidr') do |value| %>
     export FLAGS="$FLAGS --cluster-cidr=<%= value %>"
 <% end %>
@@ -206,6 +207,13 @@ export FLAGS="$FLAGS --prefer-bundled-bin"
 
 #get bootstrap server in cluster
 export BOOTSTRAP_SERVER=<%= link('k3s-server').instances[0].address %>
+
+
+<% if_p('k3s.etcd-args') do |value| %>
+<% p('k3s.etcd-args').each do |flag| %>
+    export FLAGS="$FLAGS --etcd-arg=<%= flag %>"
+<% end %>
+<% end %>
 
 <% if_p('k3s.embedded-ha-etcd') do |value| %>
 
