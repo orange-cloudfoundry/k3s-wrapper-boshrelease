@@ -1,7 +1,9 @@
 ---
 name: k3s-agent
 
-packages: []
+packages:
+  - k3s-utils
+
 templates:
   config/bpm.yml: config/bpm.yml
   bin/pre-start.erb: bin/pre-start
@@ -128,6 +130,23 @@ properties:
   k3s.token-file-content:
     description: token-file content. see https://kubernetes.io/docs/reference/access-authn-authz/authentication/#static-token-file
 
+  k3s.host-secrets.dir:
+    description: a directory of secrets to create
+    default: /var/vcap/data/secrets
+
+  k3s.host-secrets.files:
+    description: a list of secrets to create
+    default: []
+    example: |
+      - name: cloud.conf
+        content: |+
+          [Global]
+          auth-url=https://openstack.internal:5000/v3
+          domain-name=Default
+          region=RegionOne
+          tenant-id=badcafefeddeadbeeffacedeafbadcad
+          username=k3s-admin
+          password=**********
 # args
   k3s.kubelet-args:
     description: (agent/flags) Customized flag for kubelet process
@@ -156,7 +175,7 @@ properties:
       #   # default value
       #   #endpoint: localhost:4317
       #   samplingRatePerMillion: 100
-        
+
 
   k3s.containerd_additional_env_vars:
     description: additional env vars to set for containerd (the key will be prefixed with CONTAINERD_, and set in k3s launch context

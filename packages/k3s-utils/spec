@@ -1,0 +1,8 @@
+---
+name: k3s-utils
+
+dependencies: [ ]
+
+files:
+  - k3s-utils/*
+
