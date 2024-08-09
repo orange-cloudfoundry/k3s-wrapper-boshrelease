@@ -13,7 +13,7 @@ assert_declared_functions 'k3s_check_config' 'disable_ni_hardware_option' 'force
 # Therefore, we linked /var/lib/kubelet to the specified root directory.
 # https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/#device-plugin-implementation
 
-force_link_dir "/var/vcap/data/k3s-agent/kubelet" "/var/lib/kubelet"
+force_link_dir "/var/vcap/data/k3s-server/kubelet" "/var/lib/kubelet"
 
 if k3s_check_config; then
   echo "k3s check-config success"
