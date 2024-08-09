@@ -1,7 +1,9 @@
 ---
 name: k3s-server
 
-packages: []
+packages:
+  - k3s-utils
+
 templates:
   config/bpm.yml: config/bpm.yml
   bin/pre-start.erb: bin/pre-start
@@ -77,6 +79,24 @@ properties:
 
   k3s.token:
     description: (cluster) Shared secret used to join a server or agent to a cluster [$K3S_TOKEN]
+
+  k3s.host-secrets.dir:
+    description: a directory of secrets to create
+    default: /var/vcap/data/secrets
+
+  k3s.host-secrets.files:
+    description: a list of secrets to create
+    default: []
+    example: |
+      - name: cloud.conf
+        content: |+
+          [Global]
+          auth-url=https://openstack.internal:5000/v3
+          domain-name=Default
+          region=RegionOne
+          tenant-id=badcafefeddeadbeeffacedeafbadcad
+          username=k3s-admin
+          password=**********
 
   k3s.kubelet-args:
     description: (agent/flags) Customized flag for kubelet process
