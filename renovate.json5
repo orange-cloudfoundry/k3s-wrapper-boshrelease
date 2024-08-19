@@ -6,7 +6,7 @@
     'github>orange-cloudfoundry/renovate-public-presets:boshreleases-default.json5'
   ],
   enabledManagers: [
-    "github-actions",
+    'github-actions',
   ],
   ignorePaths: [
     'packages/**',
@@ -16,20 +16,22 @@
   ],
   baseBranches: [
     // don't run on renovate branches
-    "$default",
+    '$default',
     // See https://docs.renovatebot.com/configuration-options/#basebranches
     // baseBranches supports Regular Expressions that must begin and end with /
   ], //See also possible support for multiple base branches, one per K8S minor version https://docs.renovatebot.com/configuration-options/#basebranches
   packageRules: [
     {
-      description: "Add common labels",
-      matchDepPatterns: ["*"],
+      description: 'Add common labels',
       addLabels: [
         // See full list of fields available at https://docs.renovatebot.com/templates/#other-available-fields
-        "datasource/{{datasource}}",
-        "depName/{{depNameSanitized}}",
-        "manager/{{manager}}",
-      ]
+        'datasource/{{datasource}}',
+        'depName/{{depNameSanitized}}',
+        'manager/{{manager}}',
+      ],
+      matchDepNames: [
+        '/*/',
+      ],
     },
   ],
 }
