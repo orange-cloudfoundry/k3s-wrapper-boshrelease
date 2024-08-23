@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eu
 
 export JOB_DIR=/var/vcap/sys/log/k3s-server
 
@@ -18,6 +18,6 @@ export K3S_NODE_NAME=<%= spec.name %>-<%= spec.index %>
 >> $JOB_DIR/drain.log \
 2>> $JOB_DIR/drain-stderr.log
 
-echo 0;
+echo 0
 
 

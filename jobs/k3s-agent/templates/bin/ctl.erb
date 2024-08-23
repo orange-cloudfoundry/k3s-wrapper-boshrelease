@@ -1,133 +1,100 @@
-#!/bin/bash
+#!/bin/bash -eu
 
-RUN_DIR=/var/vcap/sys/run/k3s-agent
-LOG_DIR=/var/vcap/sys/log/k3s-agent
-PIDFILE=${RUN_DIR}/pid
+export RUN_DIR=/var/vcap/sys/run/k3s-agent
+export LOG_DIR=/var/vcap/sys/log/k3s-agent
+export JOB_DIR=/var/vcap/jobs/k3s-agent
+export DATA_DIR=/var/vcap/data/k3s-agent
+export STORE_DIR=/var/vcap/store/k3s-agent
+
+export LOCAL_STORAGE_DIR='<%= p('k3s.local_storage_dir') %>'
+
+export PIDFILE=${RUN_DIR}/pid
 
 case $1 in
 
   start)
-    mkdir -p $RUN_DIR $LOG_DIR
-    chown -R vcap:vcap $RUN_DIR $LOG_DIR
+    mkdir -p "$RUN_DIR" "$LOG_DIR"
+    chown -R vcap:vcap "$RUN_DIR" "$LOG_DIR"
 
     echo $$ > $PIDFILE
-	
-    #set server ips (or vip)
-    export servers="<% masters = link('k3s-server') %><% masters.instances.each do |instance| %> --server=https://<%= instance.address %>:6443 <% end %>"
 
+    # set server ips (or vip)
+    export SERVER_FLAGS='<%= link("k3s-server").instances.map{ |instance| "--server=https://#{instance.address}:6443" }.join(" ") %>'
 
-    #override server if vip
-<% if_p('k3s.master_vip_api') do |flag| %>
+<%- if_p('k3s.master_vip_api') do |flag| -%>
+    # override server if vip
     export servers=" --server=https://<%= flag %>:6443"
-<% end %>
-
-
+<%- end -%>
     export K3S_NODE_NAME=<%= spec.name %>-<%= spec.index %>
-
-
-<% if_p('k3s.node_name_prefix') do |prefix| %>
+<%- if_p('k3s.node_name_prefix') do |prefix| -%>
     export K3S_NODE_NAME=<%= prefix %>-<%= spec.index %>
-<% end %>
-
-
-
-
-
-
-    <% if_p('k3s.token-file-content') do |value| %>
-    export K3S_TOKEN_FILE=/var/vcap/jobs/k3s-agent/config/token.csv
-    <% end %>
+<%- end -%>
+<%- if_p('k3s.token-file-content') do |_| -%>
+    export K3S_TOKEN_FILE="$JOB_DIR/config/token.csv"
+<%- end -%>
 
     export FLAGS=""
-    
-    #adapt kubelet root dir to match bosh fs
-    export FLAGS="$FLAGS --kubelet-arg=root-dir=/var/vcap/data/k3s-agent/kubelet"
-
-<% if_p('k3s.set-provider-id-prefix') do |prefix| %>
+<%- if_p('k3s.set-provider-id-prefix') do |prefix| -%>
     export FLAGS="$FLAGS --kubelet-arg=provider-id=<%= prefix %>://<%= spec.name %>-<%= spec.index %>"
-<% end %>
-
-
-<% if_p('k3s.vmodule') do |vmodule| %>
+<%- end -%>
+<%- if_p('k3s.vmodule') do |vmodule| -%>
     export FLAGS="$FLAGS --vmodule <%= vmodule %>"    
-<% end %>
-
-
-
-<% if_p('k3s.node-labels') do |value| %>
-<% p('k3s.node-labels').each do |label| %>
+<%- end -%>
+<%- p('k3s.node-labels',[]).each do |label| -%>
     export FLAGS="$FLAGS --node-label <%= label %>"
-<% end %>
-<% end %>
-
-<% if_p('k3s.node-taints') do |value| %>
-<% p('k3s.node-taints').each do |taint| %>
+<%- end -%>
+<%- p('k3s.node-taints',[]).each do |taint| -%>
     export FLAGS="$FLAGS --node-taint=<%= taint %>"
-<% end %>
-<% end %>
-
-
-<% if_p('k3s.kube-proxy-arg') do |value| %>
-<% p('k3s.kube-proxy-arg').each do |flag| %>
+<%- end -%>
+<%- p('k3s.kube-proxy-arg',[]).each do |flag| -%>
     export FLAGS="$FLAGS --kube-proxy-arg=<%= flag %>"
-<% end %>
-<% end %>
-
-<% if_p('k3s.kubelet-args') do |value| %>
-<% p('k3s.kubelet-args').each do |flag| %>
+<%- end -%>
+<%- p('k3s.kubelet-args',[]).each do |flag| -%>
     export FLAGS="$FLAGS --kubelet-arg=<%= flag %>"
-<% end %>
-<% end %>
+<%- end -%>
+<%- p('k3s.containerd_additional_env_vars',[]).each do |var| -%>
+    export CONTAINERD_<%= var['name'] %>="<%= var['value'] %>"
+<%- end -%>
+<%- if spec.ip != spec.networks.marshal_dump.values.first.ip -%>
+    # set external ip flags
+    # define first ip as external_ip
+    export FLAGS="$FLAGS --node-external-ip=<%= spec.networks.marshal_dump.values.first.ip %>"
+<%- end -%>
+<%- if spec.ip != spec.networks.marshal_dump.values.last.ip -%>
+    # define last ip as external_ip
+    export FLAGS="$FLAGS --node-external-ip=<%= spec.networks.marshal_dump.values.last.ip %>"
+<%- end -%>
+<%- if_p('k3s.kubelet-config-file') do |_| -%>
+    export FLAGS="$FLAGS --kubelet-arg=config=$JOB_DIR/config/kubelet-config.yaml"
+<%- end -%>
 
-
-<% if_p('k3s.containerd_additional_env_vars') do |value| %>
-<% p('k3s.containerd_additional_env_vars').each do |var| %>
-  export CONTAINERD_<%= var['name'] %>="<%= var['value'] %>"
-<% end %>
-<% end %>
-
-
-#set external ip flags
-<% if spec.ip != spec.networks.marshal_dump.values.first.ip %>
-#define first ip as external_ip
-export FLAGS="$FLAGS --node-external-ip=<%= spec.networks.marshal_dump.values.first.ip %>"
-<% end %>
-
-<% if spec.ip != spec.networks.marshal_dump.values.last.ip %>
-#define last ip as external_ip
-export FLAGS="$FLAGS --node-external-ip=<%= spec.networks.marshal_dump.values.last.ip %>"
-<% end %>
-
-<% if_p('k3s.kubelet-config-file') do |value| %>
-export FLAGS="$FLAGS --kubelet-arg=config=/var/vcap/jobs/k3s-agent/config/kubelet-config.yaml"
-<% end %>
-
-export FLAGS="$FLAGS --prefer-bundled-bin"
+    export FLAGS="$FLAGS --prefer-bundled-bin"
 
     ulimit -n 1048576    # open files
     ulimit -u unlimited  # num processes
     mount --make-rshared /
 
     exec  /var/vcap/packages/k3s/k3s agent \
-    -v <%= p('k3s.v') %> \
-    --token=<%= p('k3s.token') %> \
-    --data-dir=/var/vcap/store/k3s-agent \
-    --private-registry=/var/vcap/jobs/k3s-agent/config/registries.yaml \
-    --resolv-conf=/etc/resolv.conf \
-    --node-ip=<%= spec.ip %> \
-    --node-label bosh.io/az=<%= spec.az %> \
-    --node-label bosh.io/name=<%= spec.name %> \
-    --node-label bosh.io/bootstrap=<%= spec.bootstrap %>  \
-    --node-label bosh.io/index=<%= spec.index %>  \
-    --node-label bosh.io/address=<%= spec.ip %>  \
-    --node-label bosh.io/id=<%= spec.id %>  \
-    --node-label bosh.io/deployment=<%= spec.deployment %> \
-    --node-label bosh.io/agent=true \
-    --node-label topology.kubernetes.io/zone=<%= spec.az %> \
+      -v <%= p('k3s.v') %> \
+      --token=<%= p('k3s.token') %> \
+      --data-dir="/var/lib/kubelet" \
+      --private-registry="$JOB_DIR/config/registries.yaml" \
+      --resolv-conf=/etc/resolv.conf \
+      --node-ip=<%= spec.ip %> \
+      --node-label topology.kubernetes.io/zone=<%= spec.az %> \
+      --node-label bosh.io/az=<%= spec.az %> \
+      --node-label bosh.io/name=<%= spec.name %> \
+      --node-label bosh.io/bootstrap=<%= spec.bootstrap %>  \
+      --node-label bosh.io/index=<%= spec.index %>  \
+      --node-label bosh.io/address=<%= spec.ip %>  \
+      --node-label bosh.io/id=<%= spec.id %>  \
+      --node-label bosh.io/deployment=<%= spec.deployment %> \
+      --node-label bosh.io/mode=agent \
+      --node-label bosh.io/agent=true \
       $FLAGS \
-      $servers \
-      >>  $LOG_DIR/k3s-agent.stdout.log \
-      2>> $LOG_DIR/k3s-agent.stderr.log
+      $SERVER_FLAGS \
+      >>  "$LOG_DIR/k3s-agent.stdout.log" \
+      2>> "$LOG_DIR/k3s-agent.stderr.log"
 
     ;;
 
@@ -141,8 +108,3 @@ export FLAGS="$FLAGS --prefer-bundled-bin"
     echo "Usage: ctl {start|stop}" ;;
 
 esac
-
-
-
-
-

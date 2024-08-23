@@ -1,34 +1,30 @@
-#!/bin/bash
+#!/bin/bash -eu
 
-if curl -I "http://127.0.0.1:10248/healthz" 2>&1 | grep -w "200\|301" ; then
-    echo "kubelet is up"
-else
-    echo "kubelet is down, post-start failure"
-fi
+source /var/vcap/packages/k3s-utils/functions.sh
+assert_declared_functions 'wait_for_http_service_ok' 'k3s_kubectl' 'k3s_wait_for_node_ready'
+
+wait_for_http_service_ok "http://127.0.0.1:10248/healthz" 300
 
 export K3S_NODE_NAME=<%= spec.name %>-<%= spec.index %>
-<% if_p('k3s.node_name_prefix') do |prefix| %>
-    export K3S_NODE_NAME=<%= prefix %>-<%= spec.index %>
-<% end %>
+<%- if_p('k3s.node_name_prefix') do |prefix| -%>
+export K3S_NODE_NAME=<%= prefix %>-<%= spec.index %>
+<%- end -%>
 
-
-#uncordon if agent drain set
-<% if_p('k3s.drain.kubeconfig') do |kubeconfig| %>
-#create local kubeconfig
-cat - > /var/vcap/data/k3s-agent/drain-kubeconfig.yaml <<EOF
+<%- if_p('k3s.drain.kubeconfig') do |kubeconfig| -%>
+# create local kubeconfig
+cat > /var/vcap/data/k3s-agent/drain-kubeconfig.yaml <<-EOF
 <%= kubeconfig %>
 EOF
 
+export KUBECONFIG="/var/vcap/data/k3s-agent/drain-kubeconfig.yaml"
 
-#uncordon
-/var/vcap/packages/k3s/k3s kubectl --kubeconfig=/var/vcap/data/k3s-agent/drain-kubeconfig.yaml uncordon $K3S_NODE_NAME \
->> $JOB_DIR/post-start.log \
-2>> $JOB_DIR/post-start-stderr.log
+k3s_wait_for_node_ready "$KUBECONFIG" "$K3S_NODE_NAME" 300
+echo "K3s node '$K3S_NODE_NAME' is ready"
 
-
-<% end %>
+# mark node as schedulable
+k3s_kubectl uncordon "$K3S_NODE_NAME" >> $JOB_DIR/post-start.log 2>> $JOB_DIR/post-start-stderr.log
+echo "K3s node '$K3S_NODE_NAME' is marked as schedulable"
+<%- end -%>
 
 #tempo to wait for kubelet to schedule pods before finishing instance group update
 sleep <%= p('k3s.bosh-post-start-delay-seconds') %>
-
-echo 0;

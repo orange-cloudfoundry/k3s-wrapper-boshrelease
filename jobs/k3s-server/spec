@@ -1,9 +1,10 @@
 ---
 name: k3s-server
 
-packages: []
+packages:
+  - k3s-utils
+
 templates:
-  config/bpm.yml: config/bpm.yml
   bin/pre-start.erb: bin/pre-start
   bin/post-start.erb: bin/post-start  
   bin/pre-stop.erb: bin/pre-stop
@@ -14,6 +15,8 @@ templates:
   bin/envrc: bin/envrc
   bin/setup-user-env.erb: bin/setup-user-env
   bin/k3s-killall.sh: bin/k3s-killall.sh
+
+  config/bosh-spec.yml.erb: config/bosh-spec.yml
 
   config/registries.yaml.erb: config/registries.yaml
   config/registry.ca.erb: config/registry.ca
@@ -53,6 +56,10 @@ properties:
 
   registry.mirrors.tls.ca:
     description: private registry ca
+
+  k3s.local_storage_dir:
+    description: ""
+    default: "/var/vcap/store/k3s-local-storage"
 
   k3s.v:
     description: "(logging) Number for the log level verbosity (default: 0)"
@@ -150,7 +157,7 @@ properties:
 
   k3s.bosh-post-start-delay-seconds:
     description: bosh post start tempo, to let the kubelet start the pods before bosh triggers another node update
-    default: 30
+    default: 0
 
   k3s.do-not-killall-on-post-stop:
     description: if set, the bosh post-stop script wont leverage k3s-killall.sh script
