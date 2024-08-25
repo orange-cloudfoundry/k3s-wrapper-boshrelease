@@ -16,8 +16,6 @@ templates:
   bin/setup-user-env.erb: bin/setup-user-env
   bin/k3s-killall.sh: bin/k3s-killall.sh
 
-  config/bosh-spec.yml.erb: config/bosh-spec.yml
-
   config/registries.yaml.erb: config/registries.yaml
   config/registry.ca.erb: config/registry.ca
   config/registry.cert.erb: config/registry.cert
