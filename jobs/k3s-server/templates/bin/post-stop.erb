@@ -1,6 +1,5 @@
-#!/bin/bash
+#!/bin/bash -eu
 
- 
 <% if_p('k3s.do-not-killall-on-post-stop') do |value| %>
 <% if p('k3s.do-not-killall-on-post-stop') %>
 echo "post-stop: SKIP k3s-killall.sh"

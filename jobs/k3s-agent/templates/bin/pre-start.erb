@@ -1,11 +1,32 @@
-#!/bin/bash
-
+#!/bin/bash -eu
 
 export JOB_DIR="/var/vcap/jobs/k3s-agent"
-/var/vcap/packages/k3s/k3s check-config
-
+export STORE_DIR="/var/vcap/store/k3s-agent"
 # Setup ssh env vars
 ${JOB_DIR}/bin/setup-user-env
+
+source /var/vcap/packages/k3s-utils/functions.sh
+assert_declared_functions 'k3s_check_config' 'disable_ni_hardware_option' 'mount_kubelet_to_bosh_data'
+
+# Adapt the kubelet root directory to match the BOSH filesystem structure.
+# Kubelet ignores the root-dir argument and creates the socket at:
+# /var/lib/kubelet/device-plugins/=kubelet.sock
+# Therefore, we linked /var/lib/kubelet to the specified root directory.
+# https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/#device-plugin-implementation
+
+export LOCAL_STORAGE_DIR='<%= p('k3s.local_storage_dir') %>'
+mkdir -p "$LOCAL_STORAGE_DIR"
+chown -R root:root "$LOCAL_STORAGE_DIR"
+chmod 775 "$LOCAL_STORAGE_DIR"
+
+mount_kubelet_to_bosh_data
+
+if k3s_check_config; then
+  echo "k3s check-config success"
+else
+  echo "k3s check-config failure, check logs"
+  exit 1
+fi
 
 # Prepare a persistent directory so /etc/rancher/node paswword file is kept on bosh recreate
 mkdir -p /etc
@@ -14,9 +35,9 @@ ln -sf /var/vcap/store/k3s-node/etc/rancher /etc/rancher
 
 #copy images to containerd expected location (datadir/images) for airgap start.
 # see https://rancher.com/docs/k3s/latest/en/installation/airgap/
-mkdir -p /var/vcap/store/k3s-agent/agent/images
-cp /var/vcap/packages/k3s-images/k3s-airgap-images-amd64.tar.gz /var/vcap/store/k3s-agent/agent/images
-gunzip -f /var/vcap/store/k3s-agent/agent/images/k3s-airgap-images-amd64.tar.gz
+mkdir -p "$STORE_DIR/agent/images"
+cp /var/vcap/packages/k3s-images/k3s-airgap-images-amd64.tar.gz "$STORE_DIR/agent/images"
+gunzip -f "$STORE_DIR/agent/images/k3s-airgap-images-amd64.tar.gz"
 
 
 set -e
@@ -37,25 +58,8 @@ INTERFACE="$(ip --brief address show | grep "${OVERLAY_IP}" | awk '{print $1}')"
 ! rm -f /etc/systemd/system/ethtool-patch-*.service
 
 <% p('k3s.disable-vxlan-hardware-options').each do |option| %>
- #--- Disable hardware option on private interface
-OPTION="<%= option %>"
-if [ "${OPTION}" != "" ] ; then
-serviceFile="ethtool-patch-${INTERFACE}-${OPTION}.service"
-cat > /etc/systemd/system/${serviceFile} << EOF
-[Unit]
-Description=Turn off ${OPTION} on ${INTERFACE}
-After=sys-subsystem-net-devices-${INTERFACE}.device
-[Install]
-WantedBy=sys-subsystem-net-devices-${INTERFACE}.device
-[Service]
-Type=oneshot
-ExecStart=/sbin/ethtool -K ${INTERFACE} ${OPTION} off
-EOF
-
-#--- Start service
-/usr/bin/systemctl enable ${serviceFile}
-/usr/bin/systemctl start ${serviceFile}
-fi
+#--- Disable hardware option on private interface
+disable_ni_hardware_option "<%= option %>"
 <% end %>
 
 exit 0

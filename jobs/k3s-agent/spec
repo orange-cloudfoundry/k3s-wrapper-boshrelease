@@ -1,9 +1,10 @@
 ---
 name: k3s-agent
 
-packages: []
+packages:
+  - k3s-utils
+
 templates:
-  config/bpm.yml: config/bpm.yml
   bin/pre-start.erb: bin/pre-start
   bin/post-start.erb: bin/post-start  
   bin/pre-stop.erb: bin/pre-stop
@@ -46,6 +47,10 @@ properties:
 
   registry.mirrors.tls.ca:
     description: private registry ca
+
+  k3s.local_storage_dir:
+    description: ""
+    default: "/var/vcap/store/k3s-local-storage"
 
   k3s.node_name_prefix:
     description: explicitly set k8s node name. If not set, <instance-group-name>-<index> is set automatically. If set, name is <node_name_prefix>-<index> 
@@ -119,7 +124,8 @@ properties:
 
   k3s.bosh-post-start-delay-seconds:
     description: bosh post start tempo, to let the kubelet start the pods before bosh triggers another node update
-    default: 30
+    default: 0
+
   k3s.do-not-killall-on-post-stop:
     description: if set, the bosh post-stop script wont leverage k3s-killall.sh script
     default: false 
@@ -156,7 +162,7 @@ properties:
       #   # default value
       #   #endpoint: localhost:4317
       #   samplingRatePerMillion: 100
-        
+
 
   k3s.containerd_additional_env_vars:
     description: additional env vars to set for containerd (the key will be prefixed with CONTAINERD_, and set in k3s launch context
