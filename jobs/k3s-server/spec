@@ -29,6 +29,7 @@ templates:
   config/audit-policy.yaml.erb: config/audit-policy.yaml
   config/api-server-tracing-config.yaml.erb: config/api-server-tracing-config.yaml
   config/kubelet-config.yaml.erb: config/kubelet-config.yaml
+  config/scheduler-config.yaml.erb: config/scheduler-config.yaml
 
 # Documentation https://bosh.io/docs/links.html
 # Tutorial      https://gist.github.com/Amit-PivotalLabs/c39528248b8cdc4ba8e347f8aa68abb6
@@ -224,6 +225,18 @@ properties:
       kind: KubeletConfiguration
       shutdownGracePeriod: 30s
       shutdownGracePeriodCriticalPods: 10s
+
+# scheduler config
+  k3s.scheduler-config-file:
+    description: content of scheduler config file, to enable tuning
+    # Note: no default set. no scheduler config file by default
+    #    default: |
+    # # This is an example config that sets percentageOfNodesToScore to 50%
+    #       apiVersion: kubescheduler.config.k8s.io/v1alpha1
+    #       kind: KubeSchedulerConfiguration
+    #       algorithmSource:
+    #         provider: DefaultProvider
+    #       percentageOfNodesToScore: 50
 
   k3s.containerd_additional_env_vars:
     description: additional env vars (name/value map array) to set for containerd (the key will be prefixed with CONTAINERD_, and set in k3s launch context

@@ -230,7 +230,9 @@ export FLAGS="$FLAGS --server=https://$BOOTSTRAP_SERVER:6443"
 export FLAGS="$FLAGS --kubelet-arg=config=/var/vcap/jobs/k3s-server/config/kubelet-config.yaml"
 <% end %>
 
-
+<% if_p('k3s.scheduler-config-file') do |value| %>
+  export FLAGS="$FLAGS --kube-scheduler-arg=config=/var/vcap/jobs/k3s-server/config/scheduler-config.yaml"
+<% end %>
 
     echo $$ > $PIDFILE
 
