@@ -111,7 +111,7 @@ export FLAGS="$FLAGS --prefer-bundled-bin"
     exec  /var/vcap/packages/k3s/k3s agent \
     -v <%= p('k3s.v') %> \
     --token=<%= p('k3s.token') %> \
-    --data-dir=/var/vcap/store/k3s-agent \
+    --data-dir=/var/vcap/store/k3s-datadir \
     --private-registry=/var/vcap/jobs/k3s-agent/config/registries.yaml \
     --resolv-conf=/etc/resolv.conf \
     --node-ip=<%= spec.ip %> \
