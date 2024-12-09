@@ -5,9 +5,15 @@ export JOB_DIR="/var/vcap/jobs/k3s-server"
 # Setup ssh env vars
 ${JOB_DIR}/bin/setup-user-env
 
+#FIXME: exit on error earlier
+set -e
 
+# rename existing /var/vcap/store/k3s-server to k3s-datadir if exists
+if [ -d /var/vcap/store/k3s-server ]; then
+  # Note: potential remaining leaky open files should not be affected by the mv, according to https://unix.stackexchange.com/a/29227/381792
+  mv --no-target-directory /var/vcap/store/k3s-server /var/vcap/store/k3s-datadir
+fi
 # persistent dir for k3s datadir
-#FIXME: rename existing /var/vcap/store/k3s-agent to k3s-datadir if exists
 mkdir -p /var/vcap/store/k3s-datadir
 
 # Prepare a persistent directory so /etc/rancher/node paswword file is kept on bosh recreate
