@@ -25,7 +25,7 @@ ln -sf /var/vcap/store/k3s-node/etc/rancher /etc/rancher
 chmod go-r /var/vcap/jobs/k3s-server/config/datastore-*
 
 # Copy additional manifest file
-mkdir -p /var/vcap/store/k3s-datadir/
+mkdir -p /var/vcap/store/k3s-datadir/server-manifests
 cp -f ${JOB_DIR}/config/additional-manifest.yaml /var/vcap/store/k3s-datadir/server/manifests/additional-manifest.yaml
 
 #copy images to containerd expected location (datadir/images) for airgap start.
