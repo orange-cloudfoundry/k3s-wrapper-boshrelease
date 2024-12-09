@@ -6,18 +6,18 @@ export K3S_NODE_NAME=<%= spec.name %>-<%= spec.index %>
 <% end %>
 
 #prepare kubeconfig for remote access 
-cat /var/vcap/store/k3s-server/k3s.yaml |sed -r 's/(\b[0-9]{1,3}\.){3}[0-9]{1,3}\b'/"<%= spec.ip %>"/ > /var/vcap/store/k3s-server/kubeconfig.yml
+cat /var/vcap/store/k3s-datadir/k3s.yaml |sed -r 's/(\b[0-9]{1,3}\.){3}[0-9]{1,3}\b'/"<%= spec.ip %>"/ > /var/vcap/store/k3s-datadir/kubeconfig.yml
 
 <% if_p('k3s.master_vip_api') do |vip| %>
-cat /var/vcap/store/k3s-server/k3s.yaml |sed -r 's/(\b[0-9]{1,3}\.){3}[0-9]{1,3}\b'/"<%= vip %>"/ > /var/vcap/store/k3s-server/kubeconfig.yml
+cat /var/vcap/store/k3s-datadir/k3s.yaml |sed -r 's/(\b[0-9]{1,3}\.){3}[0-9]{1,3}\b'/"<%= vip %>"/ > /var/vcap/store/k3s-datadir/kubeconfig.yml
 <% end %>
 
 #wait for k8s api to be available, wait for 5 min max
 <% if_p('k3s.master_vip_api') do |vip| %>
-timeout 300 sh -c 'until nc -z <%= vip %> 6443; do sleep 1; done' /var/vcap/packages/k3s/k3s kubectl --kubeconfig=/var/vcap/store/k3s-server/kubeconfig.yml get pods --all-namespaces
+timeout 300 sh -c 'until nc -z <%= vip %> 6443; do sleep 1; done' /var/vcap/packages/k3s/k3s kubectl --kubeconfig=/var/vcap/store/k3s-datadir/kubeconfig.yml get pods --all-namespaces
 <% end %>
 #uncordon
-/var/vcap/packages/k3s/k3s kubectl --kubeconfig=/var/vcap/store/k3s-server/kubeconfig.yml uncordon $K3S_NODE_NAME
+/var/vcap/packages/k3s/k3s kubectl --kubeconfig=/var/vcap/store/k3s-datadir/kubeconfig.yml uncordon $K3S_NODE_NAME
 
 
 #tempo to wait for kubelet to schedule pods before finishing instance group update
