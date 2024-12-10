@@ -12,6 +12,9 @@ set -e
 if [ -d /var/vcap/store/k3s-server ]; then
   # Note: potential remaining leaky open files should not be affected by the mv, according to https://unix.stackexchange.com/a/29227/381792
   mv --no-target-directory /var/vcap/store/k3s-server /var/vcap/store/k3s-datadir
+  #reconfigure symlink
+  ln -sf /var/vcap/store/k3s-datadir/server/token /var/vcap/store/k3s-datadir/server/node-token
+  ln -sf /var/vcap/store/k3s-datadir/server/token /var/vcap/store/k3s-datadir/server/agent-token
 fi
 # persistent dir for k3s datadir
 mkdir -p /var/vcap/store/k3s-datadir
@@ -25,7 +28,7 @@ ln -sf /var/vcap/store/k3s-node/etc/rancher /etc/rancher
 chmod go-r /var/vcap/jobs/k3s-server/config/datastore-*
 
 # Copy additional manifest file
-mkdir -p /var/vcap/store/k3s-datadir/server-manifests
+mkdir -p /var/vcap/store/k3s-datadir/server/manifests
 cp -f ${JOB_DIR}/config/additional-manifest.yaml /var/vcap/store/k3s-datadir/server/manifests/additional-manifest.yaml
 
 #copy images to containerd expected location (datadir/images) for airgap start.
