@@ -15,6 +15,10 @@ if [ -d /var/vcap/store/k3s-server ]; then
   #reconfigure symlink
   ln -sf /var/vcap/store/k3s-datadir/server/token /var/vcap/store/k3s-datadir/server/node-token
   ln -sf /var/vcap/store/k3s-datadir/server/token /var/vcap/store/k3s-datadir/server/agent-token
+  #patch kubeconfigs
+  pushd /var/vcap/store/k3s-datadir/server/cred
+  find . -name '*.kubeconfig' -exec sed -i -e 's/k3s-server/k3s-datadir/g' {} \;
+  popd
 fi
 # persistent dir for k3s datadir
 mkdir -p /var/vcap/store/k3s-datadir
