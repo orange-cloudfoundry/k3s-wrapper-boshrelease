@@ -246,10 +246,10 @@ export FLAGS="$FLAGS --kubelet-arg=config=/var/vcap/jobs/k3s-server/config/kubel
     --token=<%= p('k3s.token') %> \
     --resolv-conf=/etc/resolv.conf \
     --node-ip=<%= spec.ip %> \
-    --data-dir=/var/vcap/store/k3s-server \
+    --data-dir=/var/vcap/store/k3s-datadir \
     --default-local-storage-path=/var/vcap/store/k3s-local-storage-path \
     --private-registry=/var/vcap/jobs/k3s-server/config/registries.yaml \
-    --write-kubeconfig=/var/vcap/store/k3s-server/k3s.yaml \
+    --write-kubeconfig=/var/vcap/store/k3s-datadir/k3s.yaml \
     --write-kubeconfig-mode=755 \
     --tls-san=<%= spec.ip %> \
     --tls-san=<%= spec.networks.send(spec.networks.methods(false).first).dns_record_name %> \

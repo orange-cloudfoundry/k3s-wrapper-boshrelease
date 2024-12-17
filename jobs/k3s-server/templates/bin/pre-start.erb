@@ -5,6 +5,24 @@ export JOB_DIR="/var/vcap/jobs/k3s-server"
 # Setup ssh env vars
 ${JOB_DIR}/bin/setup-user-env
 
+#FIXME: exit on error earlier
+set -e
+
+# rename existing /var/vcap/store/k3s-server to k3s-datadir if exists
+if [ -d /var/vcap/store/k3s-server ]; then
+  # Note: potential remaining leaky open files should not be affected by the mv, according to https://unix.stackexchange.com/a/29227/381792
+  mv --no-target-directory /var/vcap/store/k3s-server /var/vcap/store/k3s-datadir
+  #reconfigure symlink
+  ln -sf /var/vcap/store/k3s-datadir/server/token /var/vcap/store/k3s-datadir/server/node-token
+  ln -sf /var/vcap/store/k3s-datadir/server/token /var/vcap/store/k3s-datadir/server/agent-token
+  #patch kubeconfigs
+  pushd /var/vcap/store/k3s-datadir/server/cred
+  find . -name '*.kubeconfig' -exec sed -i -e 's/k3s-server/k3s-datadir/g' {} \;
+  popd
+fi
+# persistent dir for k3s datadir
+mkdir -p /var/vcap/store/k3s-datadir
+
 # Prepare a persistent directory so /etc/rancher/node paswword file is kept on bosh recreate
 mkdir -p /etc
 mkdir -p /var/vcap/store/k3s-node/etc/rancher
@@ -14,14 +32,14 @@ ln -sf /var/vcap/store/k3s-node/etc/rancher /etc/rancher
 chmod go-r /var/vcap/jobs/k3s-server/config/datastore-*
 
 # Copy additional manifest file
-mkdir -p /var/vcap/store/k3s-server/
-cp -f ${JOB_DIR}/config/additional-manifest.yaml /var/vcap/store/k3s-server/server/manifests/additional-manifest.yaml
+mkdir -p /var/vcap/store/k3s-datadir/server/manifests
+cp -f ${JOB_DIR}/config/additional-manifest.yaml /var/vcap/store/k3s-datadir/server/manifests/additional-manifest.yaml
 
 #copy images to containerd expected location (datadir/images) for airgap start.
 # see https://rancher.com/docs/k3s/latest/en/installation/airgap/
-mkdir -p /var/vcap/store/k3s-server/agent/images
-cp /var/vcap/packages/k3s-images/k3s-airgap-images-amd64.tar.gz /var/vcap/store/k3s-server/agent/images
-gunzip -f /var/vcap/store/k3s-server/agent/images/k3s-airgap-images-amd64.tar.gz
+mkdir -p /var/vcap/store/k3s-datadir/agent/images
+cp /var/vcap/packages/k3s-images/k3s-airgap-images-amd64.tar.gz /var/vcap/store/k3s-datadir/agent/images
+gunzip -f /var/vcap/store/k3s-datadir/agent/images/k3s-airgap-images-amd64.tar.gz
 
 
 set -e
