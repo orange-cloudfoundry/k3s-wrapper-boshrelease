@@ -9,7 +9,8 @@ ${JOB_DIR}/bin/setup-user-env
 set -e
 
 # rename existing /var/vcap/store/k3s-server to k3s-datadir if exists
-if [ -d /var/vcap/store/k3s-server ]; then
+ skip the renaming if ever the destination exists (e.g. if a rollback to the previous k3s-wrapper version was performed by bosh, e.g. due to a failed deploy of the new desired state)
+if [[ -d /var/vcap/store/k3s-server && ! -d /var/vcap/store/k3s-datadir ]]; then
   # Note: potential remaining leaky open files should not be affected by the mv, according to https://unix.stackexchange.com/a/29227/381792
   mv --no-target-directory /var/vcap/store/k3s-server /var/vcap/store/k3s-datadir
   #reconfigure symlink
