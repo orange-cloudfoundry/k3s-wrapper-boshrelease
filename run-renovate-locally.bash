@@ -28,6 +28,7 @@ echo "Git repo volume path: $GIT_REPO"
 CACHED_TMP_RENOVATE="${CACHED_TMP_RENOVATE:-/tmp/renovate/${RENOVATE_PLATFORM}}"
 echo "Renovate cache is mounted from ${CACHED_TMP_RENOVATE}"
 mkdir -p ${CACHED_TMP_RENOVATE}
+chmod 777 ${CACHED_TMP_RENOVATE}
 du -sh ${CACHED_TMP_RENOVATE}
 
 echo "RENOVATE_PLATFORM={RENOVATE_PLATFORM}. Set to github to test pull requests."

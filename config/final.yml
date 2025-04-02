@@ -2,5 +2,7 @@
 blobstore:
   provider: s3
   options:
-    bucket_name: orange-k3s-wrapper-boshrelease
+    bucket_name: s3selfcare-k3s-wrapper-boshrelease
+    region: eu
+    host: storage.googleapis.com
 final_name: k3s-wrapper
