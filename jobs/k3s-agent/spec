@@ -157,6 +157,6 @@ properties:
       #   samplingRatePerMillion: 100
         
 
-  k3s.containerd_additional_env_vars:
+  containerd_additional_env_vars:
     description: additional env vars to set for containerd (the key will be prefixed with CONTAINERD_, and set in k3s launch context
     default: []
