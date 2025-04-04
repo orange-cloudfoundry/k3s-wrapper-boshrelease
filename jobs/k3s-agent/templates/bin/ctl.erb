@@ -80,8 +80,8 @@ case $1 in
 <% end %>
 
 
-<% if_p('k3s.containerd_additional_env_vars') do |value| %>
-<% p('k3s.containerd_additional_env_vars').each do |var| %>
+<% if_p('containerd_additional_env_vars') do |value| %>
+<% p('containerd_additional_env_vars').each do |var| %>
   export CONTAINERD_<%= var['name'] %>="<%= var['value'] %>"
 <% end %>
 <% end %>
