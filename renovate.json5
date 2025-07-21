@@ -1,9 +1,9 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
-    'config:best-practices', //See https://docs.renovatebot.com/upgrade-best-practices/#use-the-configbest-practices-preset
+    'config:best-practices',
     ':disableRateLimiting',
-    'github>orange-cloudfoundry/renovate-public-presets:boshreleases-default.json5'
+    'github>orange-cloudfoundry/renovate-public-presets:boshreleases-default.json5',
   ],
   enabledManagers: [
     'github-actions',
@@ -14,17 +14,13 @@
     'manifests/**',
     'jobs/**',
   ],
-  baseBranches: [
-    // don't run on renovate branches
+  baseBranchPatterns: [
     '$default',
-    // See https://docs.renovatebot.com/configuration-options/#basebranches
-    // baseBranches supports Regular Expressions that must begin and end with /
-  ], //See also possible support for multiple base branches, one per K8S minor version https://docs.renovatebot.com/configuration-options/#basebranches
+  ],
   packageRules: [
     {
       description: 'Add common labels',
       addLabels: [
-        // See full list of fields available at https://docs.renovatebot.com/templates/#other-available-fields
         'datasource/{{datasource}}',
         'depName/{{depNameSanitized}}',
         'manager/{{manager}}',
