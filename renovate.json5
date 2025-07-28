@@ -3,7 +3,7 @@
   extends: [
     'config:best-practices', //See https://docs.renovatebot.com/upgrade-best-practices/#use-the-configbest-practices-preset
     ':disableRateLimiting',
-    'github>orange-cloudfoundry/renovate-public-presets:boshreleases-default.json5'
+    'github>orange-cloudfoundry/renovate-public-presets:boshreleases-default.json5',
   ],
   enabledManagers: [
     'github-actions',
@@ -14,7 +14,7 @@
     'manifests/**',
     'jobs/**',
   ],
-  baseBranches: [
+  baseBranchPatterns: [
     // don't run on renovate branches
     '$default',
     // See https://docs.renovatebot.com/configuration-options/#basebranches
