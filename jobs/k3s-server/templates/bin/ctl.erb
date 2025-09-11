@@ -159,8 +159,9 @@ case $1 in
 <% end %>
 <% end %>
 
-# Turn on db schema migration to prevent id exhaustion, See issue https://github.com/orange-cloudfoundry/k3s-wrapper-boshrelease/issues/106
-export KINE_SCHEMA_MIGRATION=1
+# Manually turn on one-short, the db schema migration to prevent id exhaustion, See issue https://github.com/orange-cloudfoundry/k3s-wrapper-boshrelease/issues/106
+# and https://github.com/k3s-io/kine/issues/517
+#export KINE_SCHEMA_MIGRATION=1
 
 #set tls san for api
 <% if_p('k3s.master_vip_api') do |flag| %>
