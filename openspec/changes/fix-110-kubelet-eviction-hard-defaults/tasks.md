@@ -13,5 +13,5 @@
 
 ## 3. Ship
 
-- [ ] 3.1 Commit with a Conventional Commit message, e.g. `fix: restore vanilla kubelet hard-eviction defaults with inode thresholds` and `Fixes #110` in the body.
-- [ ] 3.2 Open a PR against master (CI builds a dev release per commit).
+- [x] 3.1 Commit with a Conventional Commit message, e.g. `fix: restore vanilla kubelet hard-eviction defaults with inode thresholds` and `Fixes #110` in the body.
+- [ ] 3.2 Open a PR against master (CI builds a dev release per commit). -- deferred: gh CLI unauthenticated, commits kept local on feature-ai-agentic-authoring.
