@@ -24,4 +24,4 @@ diagnosing issue #78; tasks 1.x and 2.x are marked done accordingly, 3.x remains
 ## 4. Delivery
 
 - [x] 4.1 Commit both templates with a Conventional Commit message (`fix: ...`) referencing issue #78
-- [ ] 4.2 Open a PR (CI builds a dev release per commit)
+- [x] 4.2 Deliver by committing on the current branch (no dedicated PR per operator decision; gh auth unavailable anyway)
