@@ -4,6 +4,7 @@ if curl -I "http://127.0.0.1:10248/healthz" 2>&1 | grep -w "200\|301" ; then
     echo "kubelet is up"
 else
     echo "kubelet is down, post-start failure"
+    exit 1
 fi
 
 export K3S_NODE_NAME=<%= spec.name %>-<%= spec.index %>
@@ -20,10 +21,12 @@ cat - > /var/vcap/data/k3s-agent/drain-kubeconfig.yaml <<EOF
 EOF
 
 
-#uncordon
-/var/vcap/packages/k3s/k3s kubectl --kubeconfig=/var/vcap/data/k3s-agent/drain-kubeconfig.yaml uncordon $K3S_NODE_NAME \
->> $JOB_DIR/post-start.log \
-2>> $JOB_DIR/post-start-stderr.log
+#uncordon, retrying while the k8s api may not be ready yet (5 min max),
+#and fail the post-start so bosh surfaces the failure instead of ignoring it
+if ! timeout 300 bash -c "until /var/vcap/packages/k3s/k3s kubectl --kubeconfig=/var/vcap/data/k3s-agent/drain-kubeconfig.yaml uncordon $K3S_NODE_NAME >> $JOB_DIR/post-start.log 2>> $JOB_DIR/post-start-stderr.log; do sleep 5; done"; then
+  echo "ERROR: failed to uncordon node $K3S_NODE_NAME: k8s api unreachable or uncordon rejected"
+  exit 1
+fi
 
 
 <% end %>
