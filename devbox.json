@@ -1,0 +1,58 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetpack-io/devbox/0.10.4/.schema/devbox.schema.json",
+  "packages": {
+    "bosh-cli":                            "7.9.18",
+    "crane":                               "0.21.9",
+    "envsubst":                            "1.4.3",
+    "fsnotifier":                          "2024.2.0",
+    "gh":                                  "2.92.0",
+    "git":                                 "2.55.0",
+    "go-task":                             "3.48.0",
+    "gron":                                "0.7.1",
+    "ijq":                                 "1.4.0",
+    "jq":                                  "latest",
+    "k9s":                                 "0.51.0",
+    "kind":                                "0.32.0",
+    "kubectl":                             "1.33.4",
+    "kubectl-tree":                        "0.4.6",
+    "kubectl-view-secret":                 "0.15.1",
+    "kubectx":                             "0.11.0",
+    "kubelogin-oidc":                      "1.36.2",
+    "kubernetes-helm":                     "4.2.4",
+    "kustomize":                           "5.8.1",
+    "nodejs":                              "25.2.1",
+    "nushell":                             "0.114.1",
+    "opencode":                            "1.18.21",
+    "openspec":                            "1.7.0",
+    "spruce":              "1.35.15",
+    "uv":                  "0.10.6",
+    "vendir":              "0.45.0",
+    "yq-go":               "4.53.3",
+    "codebase-memory-mcp": "0.8.1",
+    "tree":                "2.3.2",
+    "rtk":                 "0.45.0",
+    "ansifilter":          "2.23",
+  },
+  "shell": {
+    "init_hook": [
+      "export PATH=\"$PWD/bin:$PATH\"",
+      // workaround for https://github.com/jetify-com/devbox/issues/2776
+      "source <(kubectl completion bash)",
+      "source <(kustomize completion bash)",
+      "source <(yq completion bash)",
+      "source <(task --completion bash)",
+      //broken: Succeeded: command not found
+      //"source <(vendir completion bash)"
+      "source <(k9s completion bash)",
+      "source <(openspec completion generate bash)",
+      //configure flux to default to namespace fluxcd instead of default flux-system
+      //no improvements for helmreleases still requiring explicit namespace, eg. flux trace hr -n 01-keycloak keycloak-cloudpirates
+      "export FLUX_SYSTEM_NAMESPACE=fluxcd",
+    ],
+    "scripts": {
+      "test": [
+        "echo \"Error: no test specified\" && exit 1",
+      ],
+    },
+  },
+}

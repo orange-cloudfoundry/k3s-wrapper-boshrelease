@@ -129,8 +129,14 @@ properties:
 
 # args
   k3s.kubelet-args:
-    description: (agent/flags) Customized flag for kubelet process
-    default: []
+    description: |
+      (agent/flags) Customized flag for kubelet process.
+      By default k3s disables all vanilla kubelet hard-eviction thresholds (see https://github.com/k3s-io/k3s/issues/11312),
+      which prevents pod eviction on node/container/image fs inode exhaustion.
+      The default below restores vanilla kubelet eviction defaults extended with inode thresholds.
+      Overriding this property replaces this protection: add your own eviction-hard flag to keep it.
+    default:
+      - eviction-hard=imagefs.available<15%,memory.available<100Mi,nodefs.available<10%,pid.available<10%,nodefs.inodesFree<5%,imagefs.inodesFree<6%
 
   k3s.kube-proxy-arg:
     description: (agent/flags) Customized flag for kube-proxy process

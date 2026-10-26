@@ -1,14 +1,16 @@
 #!/bin/bash
 
- 
-<% if_p('k3s.do-not-killall-on-post-stop') do |value| %>
 <% if p('k3s.do-not-killall-on-post-stop') %>
 echo "post-stop: SKIP k3s-killall.sh"
-exit 0
-
 <% else %>
 echo "post-stop: k3s-killall.sh to clean the host"
-/var/vcap/jobs/k3s-agent/bin/k3s-killall.sh
+/var/vcap/jobs/k3s-agent/bin/k3s-killall.sh || echo "post-stop: k3s-killall.sh failed, continuing with kubelet dir cleanup"
+<% end %>
+
+# https://github.com/orange-cloudfoundry/k3s-wrapper-boshrelease/issues/105
+# killall leaves residue (plugins_registry, pki, local volumes...) which
+# exhausts inodes and prevents the node from restarting: wipe the kubelet dir.
+echo "post-stop: cleaning /var/vcap/data/k3s-agent/kubelet"
+rm -rf /var/vcap/data/k3s-agent/kubelet/* 2>/dev/null || true
+
 exit 0
-<% end %>
-<% end %>

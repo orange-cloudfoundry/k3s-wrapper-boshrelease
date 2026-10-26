@@ -79,9 +79,9 @@ do_unmount_and_remove() {
 
 do_unmount_and_remove '/run/k3s'
 do_unmount_and_remove '/var/lib/rancher/k3s'
-do_unmount_and_remove '/var/vcap/data/k3s-agent/kubelet/pods'                       #--- bosh fs layout adaptation
-do_unmount_and_remove '/var/vcap/data/k3s-agent/kubelet/plugins'                    #--- bosh fs layout adaptation
-do_unmount_and_remove '/var/vcap/data/k3s-agent/kubelet/plugins/kubernetes.io/csi'  #--- bosh fs adaptation for csi mount (eg: longhorn)
+do_unmount_and_remove '/var/vcap/data/k3s-server/kubelet/pods'                       #--- bosh fs layout adaptation
+do_unmount_and_remove '/var/vcap/data/k3s-server/kubelet/plugins'                    #--- bosh fs layout adaptation
+do_unmount_and_remove '/var/vcap/data/k3s-server/kubelet/plugins/kubernetes.io/csi'  #--- bosh fs adaptation for csi mount (eg: longhorn)
 do_unmount_and_remove '/run/netns/cni-'
 
 # Remove CNI namespaces
