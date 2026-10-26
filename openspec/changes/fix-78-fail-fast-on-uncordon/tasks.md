@@ -23,5 +23,5 @@ diagnosing issue #78; tasks 1.x and 2.x are marked done accordingly, 3.x remains
 
 ## 4. Delivery
 
-- [ ] 4.1 Commit both templates with a Conventional Commit message (`fix: ...`) referencing issue #78
+- [x] 4.1 Commit both templates with a Conventional Commit message (`fix: ...`) referencing issue #78
 - [ ] 4.2 Open a PR (CI builds a dev release per commit)
