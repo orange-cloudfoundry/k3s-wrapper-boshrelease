@@ -15,4 +15,4 @@
 ## 3. Ship
 
 - [x] 3.1 Commit: `fix: clean kubelet dir on post-stop and fix server killall paths` with `Fixes #105` in the body.
-- [ ] 3.2 Open a PR against master (blocked on gh authentication as for #110 — defer if still unauthenticated).
+- [ ] 3.2 Open a PR against master (blocked on gh authentication as for #110 — defer if still unauthenticated). -- deferred: gh still unauthenticated, commits kept local on feature-ai-agentic-authoring.
